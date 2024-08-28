@@ -1,0 +1,103 @@
+<!-- templates/vendor_dashboard.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vendor Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+        th, td {
+            padding: 12px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .btn {
+            padding: 8px 12px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+        }
+        .btn:hover {
+            background-color: #0056b3;
+        }
+        .btn-view {
+            background-color: #17a2b8;
+        }
+        .btn-view:hover {
+            background-color: #117a8b;
+        }
+        .btn-accept {
+            background-color: #28a745;
+        }
+        .btn-accept:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Welcome, {{ user.username }}!</h1>
+    <p>Here are your created orders:</p>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Order ID</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <!-- Loop through orders created by the vendor -->
+            {% for order in orders %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.product }}</td>
+                <td>{{ order.quantity }}</td>
+                <td>{{ order.status }}</td>
+                <td>
+                    <a href="{% url 'view_proposals' order.id %}" class="btn btn-view">View Proposals</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5">You have not created any orders yet.</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{% url 'create_order' %}" class="btn">Create New Order</a>
+</div>
+
+</body>
+</html>
