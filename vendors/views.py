@@ -1,7 +1,10 @@
 # vendors/views.py
+from django.conf import settings
 from django.shortcuts import get_object_or_404, render, redirect
 from django.core.mail import send_mail
 from django.contrib.auth.models import User
+from django.urls import reverse
+
 from .models import TransportOrder, TransportProposal
 from django.contrib.auth.decorators import login_required
 
@@ -38,6 +41,24 @@ def create_order(request):
         )
         order.save()
         
+        # Get all transporters' emails
+        transporters = User.objects.filter(groups__name='Transporters') 
+        transporter_emails = [transporter.email for transporter in transporters]
+        
+        # Generate the link to the view order page
+        order_url = request.build_absolute_uri(reverse('view_order', args=[order.id]))
+
+        # Send email to all transporters
+        subject = 'New Transport Order Available'
+        message = f'A new transport order has been created.\n\nProduct: {order.product}\nQuantity: {order.quantity}\nPickup: {order.pickup_location}\nDestination: {order.destination}\n\nClick here to view the order: {order_url}'
+        
+        send_mail(
+            subject,
+            message,
+            settings.DEFAULT_FROM_EMAIL,
+            transporter_emails,
+            fail_silently=False,
+        )
         # Redirect to the vendor dashboard after successful order creation
         return redirect('vendor_dashboard')
 
