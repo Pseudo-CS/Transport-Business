@@ -1,3 +1,3 @@
-clone repository, then in the cloned folder create a python virtual environment\n
+clone repository, then in the cloned folder create a python virtual environment<br>
 install django - pip install django
 from the virtual env run: python manage.py runserver
