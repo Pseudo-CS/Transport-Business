@@ -75,5 +75,34 @@ def accept_proposal(request, proposal_id):
     proposal.status = 'Accepted'
     proposal.order.save()
     proposal.save()
+
+    TransportProposal.objects.filter(order=proposal.order).exclude(id=proposal_id).update(status='Rejected')
+    
+    # Get the order details
+    order = proposal.order
+    
+    # Send an email to the transporter
+    subject = 'Your Transport Proposal Has Been Accepted'
+    message = f'''
+    Congratulations! Your proposal for the following order has been accepted:
+
+    Order ID: {order.id}
+    Product: {order.product}
+    Quantity: {order.quantity}
+    Pickup Location: {order.pickup_location}
+    Destination: {order.destination}
+
+    Agreed Quotation: {proposal.price} USD
+
+    Please prepare for the transport as per the agreed terms.
+    '''
+    
+    send_mail(
+        subject,
+        message,
+        settings.DEFAULT_FROM_EMAIL,
+        [proposal.transporter.email],  # Send email to the transporter
+        fail_silently=False,
+    )
     
     return redirect('vendor_dashboard')
