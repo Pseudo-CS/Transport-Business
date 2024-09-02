@@ -131,5 +131,5 @@ EMAIL_HOST = 'smtp.gmail.com'  # Example for Gmail
 EMAIL_PORT = 587  # Common port for sending emails with TLS
 EMAIL_USE_TLS = True  # Enable TLS
 EMAIL_HOST_USER = 'emilyjacksonx112@gmail.com'  # Your email address
-EMAIL_HOST_PASSWORD = 'eaxg gtgu lvqw mttg'  # Your email account password
+EMAIL_HOST_PASSWORD = ''  # Your email account password
 DEFAULT_FROM_EMAIL = 'emilyjacksonx112@gmail.com'  # Default from email address
